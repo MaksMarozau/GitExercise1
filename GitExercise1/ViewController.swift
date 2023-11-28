@@ -35,7 +35,7 @@ final class ViewController: UIViewController {
         webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
         webView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15).isActive = true
         webView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15).isActive = true
-        webView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        webView.heightAnchor.constraint(equalToConstant: 280).isActive = true
         
         
         openButton.translatesAutoresizingMaskIntoConstraints = false
@@ -61,9 +61,36 @@ final class ViewController: UIViewController {
         openButton.backgroundColor = .white
         openButton.layer.borderColor = UIColor.black.cgColor
         openButton.layer.borderWidth = 2
+        openButton.addTarget(self, action: #selector(tapOpen), for: .touchUpInside)
         
     }
 
+    
+    
+//MARK: - Actions
+    
+    @objc func tapOpen() {
+        
+        let actionSheet = UIAlertController(title: "Hello!", message: "You can coose the caarton", preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Фиксики", style: .default, handler: { _ in
+            guard let url = URL(string: "https://www.youtube.com/watch?v=EhZSJYtViHU") else {return}
+            self.webView.load(URLRequest(url: url))
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Маша и Медведь", style: .default, handler: { _ in
+            guard let url = URL(string: "https://www.youtube.com/watch?v=Ht8CYMzT8sw") else {return}
+            self.webView.load(URLRequest(url: url))
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Малышарики", style: .default, handler: { _ in
+            guard let url = URL(string: "https://www.youtube.com/watch?v=4WVOjhLcCX0") else {return}
+            self.webView.load(URLRequest(url: url))
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(actionSheet, animated: true)
+    }
 
 }
 
