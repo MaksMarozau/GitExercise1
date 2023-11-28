@@ -12,6 +12,8 @@ final class ViewController: UIViewController {
     
     private let webView = WKWebView()
     private let openButton = UIButton()
+    private let blurEffectView = UIVisualEffectView()
+    private let visualEffect = UIBlurEffect(style: .dark)
 
     
     
@@ -23,6 +25,7 @@ final class ViewController: UIViewController {
         
         view.addSubview(webView)
         view.addSubview(openButton)
+        view.addSubview(blurEffectView)
         
         constraintes()
         configureUI()
@@ -45,7 +48,10 @@ final class ViewController: UIViewController {
         openButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         openButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         openButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
-
+        
+        
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        blurEffectView.frame = view.frame
     }
     
     
@@ -65,6 +71,8 @@ final class ViewController: UIViewController {
         openButton.layer.borderWidth = 2
         openButton.addTarget(self, action: #selector(tapOpen), for: .touchUpInside)
         
+        blurEffectView.effect = visualEffect
+        blurEffectView.alpha = 0
     }
 
     
@@ -73,25 +81,42 @@ final class ViewController: UIViewController {
     
     @objc func tapOpen() {
         
+        self.blurEffectView.alpha = 1
+        
         let actionSheet = UIAlertController(title: "Hello!", message: "You can coose the caarton", preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "Фиксики", style: .default, handler: { _ in
             guard let url = URL(string: "https://www.youtube.com/watch?v=EhZSJYtViHU") else {return}
             self.webView.load(URLRequest(url: url))
+            UIView.animate(withDuration: 1.5) {
+                self.blurEffectView.alpha = 0
+            }
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Маша и Медведь", style: .default, handler: { _ in
             guard let url = URL(string: "https://www.youtube.com/watch?v=Ht8CYMzT8sw") else {return}
             self.webView.load(URLRequest(url: url))
+            UIView.animate(withDuration: 1.5) {
+                self.blurEffectView.alpha = 0
+            }
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Малышарики", style: .default, handler: { _ in
             guard let url = URL(string: "https://www.youtube.com/watch?v=4WVOjhLcCX0") else {return}
             self.webView.load(URLRequest(url: url))
+            UIView.animate(withDuration: 1.5) {
+                self.blurEffectView.alpha = 0
+            }
         }))
         
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            UIView.animate(withDuration: 0.5) {
+                self.blurEffectView.alpha = 0
+            }
+        }))
+        
         present(actionSheet, animated: true)
+        
     }
 
 }
